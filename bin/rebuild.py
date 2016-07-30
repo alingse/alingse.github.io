@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #coding=utf-8
 #author@alingse
 #2016.07.30
