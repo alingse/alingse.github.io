@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<title>100001.Stata Data Analysis Examples.Zero-inflated Poisson Regression</title>
+
+
+<style type="text/css">
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+
+</head>
+
+<body>
+
+<p><YAML-META-INFO-START/></p>
+
+<!--
+id: 100001
+tags:
+  - tongji|统计
+  - translate|翻译
+cat: math
+cdate: "2016.07.30"
+mdate: "2016.07.30"
+title: "Stata Data Analysis Examples: Zero-inflated Poisson Regression"
+keyword: 
+    - Zero-inflated Poisson
+    - Regression
+    - Stata Data Analysis
+-->
+
+<h2 id="toc_0"><YAML-META-INFO-END/></h2>
+
+<p>类型:翻译
+翻译时间: 2016.07.30－
+译者:alingse</p>
+
+<hr>
+
+<h2 id="toc_1">Stata Data Analysis Examples:Zero-inflated Poisson Regression</h2>
+
+<h3 id="toc_2">translate from</h3>
+
+<div><pre><code class="language-none">Introduction to SAS.  UCLA: Statistical Consulting Group. 
+from http://www.ats.ucla.edu/stat/sas/notes2/ (accessed November 24, 2007).</code></pre></div>
+
+<p><strong>Version info</strong>: Code for this page was tested in Stata 12.</p>
+
+<p>Zero-inflated poisson regression is used to model count data that has an excess of zero counts.<br>
+Further, theory suggests that the excess zeros
+are generated by a separate process from the count values and that the excess zeros can be modeled independently.</p>
+
+<p>Thus, the <strong>zip</strong> model has two parts, a poisson count model and the logit model
+for predicting excess zeros. You may want to review these Data Analysis Example pages, <a href="http://www.ats.ucla.edu/stat/stata/dae/poissonreg.htm">Poisson Regression</a> and<a href="http://www.ats.ucla.edu/stat/stata/dae/logit.htm">Logit Regression</a>.</p>
+
+<p><strong>Please Note:</strong> The purpose of this page is to show how to use various data analysis commands. 
+It does not cover all aspects of the research process which researchers are expected to do. In 
+particular, it does not cover data cleaning and verification, verification of assumptions, model 
+diagnostics and potential follow-up analyses.</p>
+
+<h4 id="toc_3">Examples of zero-inflated Poisson regression</h4>
+
+<p>Example 1.</p>
+
+<p>School administrators study the attendance behavior of high school juniors over 
+one semester at two schools.&nbsp; Attendance is measured by number of days of 
+absent and is predicted by gender of the student and standardized
+test scores in math and language arts.&nbsp; Many students have no absences 
+during the semester.&nbsp;</p>
+
+<p>Example 2.</p>
+
+<p>The state wildlife biologists want to model how many fish are being caught by fishermen
+at a state park.  Visitors are asked whether or not they have a camper, how many
+people were in the group, were there children in the group and how many fish were caught.
+Some visitors do not fish, but there is no data on whether a person fished or not.  Some
+visitors who did fish did not catch any fish so there are excess zeros in the data because 
+of the people that did not fish. </p>
+
+<!-- 
+
+Example 2. 
+
+A study of the number of journal articles published by tenured faculty as a function of 
+discipline (fine arts, science, social science, humanities, medical, 
+etc).  To get tenure faculty must publish, i.e., there are  no tenured faculty with
+zero publications.
+
+Example 3.
+
+A study by the county traffic court on the number of tickets received by teenagers 
+as predicted by school performance, amount of driver training and gender.  Only individuals 
+who have received at least one citation are in the traffic court files.
+ -->
+
+<h4 id="toc_4">Description of the data</h4>
+
+<p>Let&#39;s pursue Example 2 from above.&nbsp; </p>
+
+<p>We have data on 250 groups that went to a park.&nbsp; Each group was questioned 
+about how many fish they caught (<strong>count</strong>), how many children were in the 
+group (<strong>child</strong>), how many people were in the group (<strong>persons</strong>), and 
+whether or not they brought a camper to the park (<strong>camper</strong>).&nbsp;&nbsp;&nbsp; </p>
+
+<p>In addition to predicting the number of fish caught, there is interest in 
+predicting the existence of excess zeros, i.e. the zeroes that were not simply a 
+result of bad luck fishing. We will use the variables <strong>child</strong>, <strong>persons</strong>, and <strong>camper</strong> in our model. Let&#39;s look at the data.</p>
+
+<p><strong>use http://www.stata-press.com/data/r10/fish, clear</strong></p>
+
+<p><strong>summarize count child persons camper</strong></p>
+
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Obs</th>
+<th>Mean</th>
+<th>Std. Dev.</th>
+<th>Min</th>
+<th>Max</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>count</td>
+<td>250</td>
+<td>3.296</td>
+<td>11.63503</td>
+<td>0</td>
+<td>149</td>
+</tr>
+<tr>
+<td>child</td>
+<td>250</td>
+<td>.684</td>
+<td>.8503153</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>persons</td>
+<td>250</td>
+<td>2.528</td>
+<td>1.11273</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>camper</td>
+<td>250</td>
+<td>.588</td>
+<td>.4931824</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>histogram count, discrete freq</strong></p>
+
+<p><img src="../_static/pic/fishhist.gif" alt=""></p>
+
+<p><strong>tab1 child persons camper</strong></p>
+
+<div><pre><code class="language-none">-&gt; tabulation of child  
+ 
+       child |      Freq.     Percent        Cum.
+ ------------+-----------------------------------
+           0 |        132       52.80       52.80
+           1 |         75       30.00       82.80
+           2 |         33       13.20       96.00
+           3 |         10        4.00      100.00
+ ------------+-----------------------------------
+       Total |        250      100.00
+</code></pre></div>
+
+<div><pre><code class="language-none"> -&gt; tabulation of persons  
+ 
+     persons |      Freq.     Percent        Cum.
+ ------------+-----------------------------------
+           1 |         57       22.80       22.80
+           2 |         70       28.00       50.80
+           3 |         57       22.80       73.60
+           4 |         66       26.40      100.00
+ ------------+-----------------------------------
+       Total |        250      100.00</code></pre></div>
+
+<div><pre><code class="language-none"> -&gt; tabulation of camper  
+ 
+      camper |      Freq.     Percent        Cum.
+ ------------+-----------------------------------
+           0 |        103       41.20       41.20
+           1 |        147       58.80      100.00
+ ------------+-----------------------------------
+       Total |        250      100.00
+ </code></pre></div>
+
+<h4 id="toc_5">Analysis methods you might consider</h4>
+
+<p>Below is a list of some analysis methods you may have encountered.
+Some of the methods listed are quite reasonable while others have either fallen out of favor or 
+have limitations. </p>
+
+<ul>
+<li>  Zero-inflated Poisson Regression - The focus of this web page.</li>
+<li>  Zero-inflated Negative Binomial Regression - Negative binomial regression does better with
+over dispersed data, i.e. variance much larger than the mean.*   Ordinary Count Models - Poisson or negative binomial models might be more
+appropriate if there are no excess zeros.</li>
+<li>  OLS Regression - You could try to analyze these data using OLS regression. However, count
+data are highly non-normal and are not well estimated by OLS regression.</li>
+</ul>
+
+<h4 id="toc_6">Zero-inflated Poisson regression</h4>
+
+<p>We will run the <strong>zip</strong> command with <strong>child</strong> and <strong>camper</strong> as predictors of the counts,
+<strong>persons</strong> as the predictor of the excess zeros.  We have included the <strong>vuong</strong> option
+which provides a test of the zero-inflated model versus the standard poisson model.</p>
+
+<p><strong>zip count child camper, inflate(persons) vuong</strong></p>
+
+<div><pre><code class="language-none">
+Fitting constant-only model:
+
+Iteration 0:   log likelihood =  -1347.807  
+Iteration 1:   log likelihood = -1315.5343  
+Iteration 2:   log likelihood = -1126.3689  
+Iteration 3:   log likelihood = -1125.5358  
+Iteration 4:   log likelihood = -1125.5357  
+Iteration 5:   log likelihood = -1125.5357  
+
+Fitting full model:
+
+Iteration 0:   log likelihood = -1125.5357  
+Iteration 1:   log likelihood = -1044.8553  
+Iteration 2:   log likelihood = -1031.8733  
+Iteration 3:   log likelihood = -1031.6089  
+Iteration 4:   log likelihood = -1031.6084  
+Iteration 5:   log likelihood = -1031.6084  
+
+Zero-inflated Poisson regression                  Number of obs   =        250
+                                                  Nonzero obs     =        108
+                                                  Zero obs        =        142
+
+Inflation model = logit                           LR chi2(2)      =     187.85
+Log likelihood  = -1031.608                       Prob &gt; chi2     =     0.0000
+
+------------------------------------------------------------------------------
+       count |      Coef.   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+count        |
+       child |  -1.042838   .0999883   -10.43   0.000    -1.238812    -.846865
+    1.camper |   .8340222   .0936268     8.91   0.000      .650517    1.017527
+       _cons |   1.597889   .0855382    18.68   0.000     1.430237     1.76554
+-------------+----------------------------------------------------------------
+inflate      |
+     persons |  -.5643472   .1629638    -3.46   0.001    -.8837503    -.244944
+       _cons |   1.297439   .3738522     3.47   0.001     .5647022    2.030176
+------------------------------------------------------------------------------
+Vuong test of zip vs. standard Poisson:            z =     3.57  Pr&gt;z = 0.0002</code></pre></div>
+
+<p>The output looks very much like the output from an OLS regression:  </p>
+
+<ul>
+<li>  Begins with
+the iteration log giving the values of the log likelihoods starting
+with a model that has no predictors.  The last value in the log is the final value
+of the log likelihood for the full model and is repeated below.</li>
+<li>  Next comes the header information. On the right-hand side the number ofobservations used (250), number of nonzero observations (108) are given along with the likelihoodratio chi-squared.&nbsp;This compares the full model to a model without count predictors, giving adifference of two degrees of freedom.&nbsp; This is followed by the p-value forthe chi-square. The model, as a whole, is statistically significant.*   Below the header you will find the Poisson regression coefficients for each of thecount predicting variables
+along with standard errors, z-scores, p-values and 95% confidence intervals for the
+coefficients.</li>
+<li>  Following these are logit coefficients for the variable predicting excess zeros along
+with its standard errors, z-scores, p-values and confidence intervals.</li>
+<li>  Below the various coefficients you will find the results of the Vuong test.  The
+Vuong test compares the zero-inflated model with an ordinary poisson regression model.
+A significant z-test indicates that the zero-inflated model is better.</li>
+</ul>
+
+<p>Now we can move on to the specifics of the individual results.</p>
+
+<ul>
+<li>  Using the <strong>robust</strong> option has resulted in a fairly large change in the model chi-square,
+which is now a Wald chi-square.&nbsp; This statistic is based on log pseudo-likelihoods instead oflog-likelihoods.</li>
+<li><p>The coefficients for <strong>child</strong> and <strong>camper</strong> can be interpreted as follows:</p>
+
+<ul>
+<li>  For each unit increase of child the expected log count of the response variable decreases by 1.043.</li>
+<li>  Being a camper increases the expected log count by .834.</li>
+</ul></li>
+<li><p>The inflate coefficient for <strong>persons</strong> suggests that for each unit increase in person the log odds of an inflated zero decrease by.564.</p></li>
+</ul>
+
+<p>We can use the <strong>margins</strong> (introduced in Stata 11) to help understand our model.  We will
+first compute the expected counts for the categorical variable <strong>camper</strong> while holding the
+continuous variable <strong>child</strong> at its mean value using the <strong>atmeans</strong> option.</p>
+
+<p><strong>margins camper, atmeans</strong></p>
+
+<blockquote>
+<pre>
+
+Adjusted predictions                              Number of obs   =        250
+Model VCE    : Robust
+
+Expression   : Predicted number of events, predict()
+at           : child           =        .684 (mean)
+               0.camper        =        .412 (mean)
+               1.camper        =        .588 (mean)
+               persons         =       2.528 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      camper |
+          0  |   1.289132   .4393168     2.93   0.003     .4280866    2.150177
+          1  |   2.968305    .619339     4.79   0.000     1.754423    4.182187
+------------------------------------------------------------------------------</pre>
+</blockquote>
+
+<p>The expected count for the number of fish caught by noncampers is 1.289 while for campers it is
+2.968 at the means of <strong>child</strong> and <strong>persons</strong>.</p>
+
+<p><p>Using the <strong>dydx</strong> option computes the difference in expected counts between <strong>camper</strong> 
+= 0 and <strong>camper</strong> = 1 while still holding <strong>child</strong> at its mean of .684 
+and <strong>persons</strong> at its mean of 2.528.</p>
+
+<blockquote>
+<pre><b>margins, dydx(camper) atmeans</b>
+
+Conditional marginal effects    Number of obs   = 250
+Model VCE    : Robust
+
+Expression   : Predicted number of events, predict()
+dy/dx w.r.t. : 1.camper
+at           : child           =        .684 (mean)
+               0.camper        =        .412 (mean)
+               1.camper        =        .588 (mean)
+               persons         =       2.528 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |      dy/dx   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    1.camper |   1.679173   .7754611     2.17   0.030     .1592975    3.199049
+------------------------------------------------------------------------------
+Note: dy/dx for factor levels is the discrete change from the base level.</pre>
+</blockquote>
+
+<p><p>The difference in the number of fish caught by campers and noncampers is 1.679, which is
+statistically significant.</p>
+
+<p>One last <strong>margins</strong> command will give the expected counts for values of <strong>child</strong> 
+from zero to three at both levels of <strong>camper</strong>. </p>
+
+<blockquote>
+<pre><b>margins, at(child=(0(1)3) camper=(0/1)) vsquish<b>
+
+Predictive margins         Number of obs   =        250
+Model VCE    : Robust
+
+Expression   : Predicted number of events, predict()
+1._at        : child           =           0
+               camper          =           0
+2._at        : child           =           0
+               camper          =           1
+3._at        : child           =           1
+               camper          =           0
+4._at        : child           =           1
+               camper          =           1
+5._at        : child           =           2
+               camper          =           0
+6._at        : child           =           2
+               camper          =           1
+7._at        : child           =           3
+               camper          =           0
+8._at        : child           =           3
+               camper          =           1
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         _at |
+          1  |   2.616441   .6470522     4.04   0.000     1.348242     3.88464
+          2  |   6.024516   2.159288     2.79   0.005      1.79239    10.25664
+          3  |    .922172   .4142303     2.23   0.026     .1102954    1.734048
+          4  |   2.123358   .4771534     4.45   0.000     1.188154    3.058561
+          5  |   .3250221   .2611556     1.24   0.213    -.1868335    .8368777
+          6  |   .7483834   .3929987     1.90   0.057    -.0218798    1.518647
+          7  |    .114555   .1351887     0.85   0.397    -.1504101      .37952
+          8  |   .2637699   .2365495     1.12   0.265    -.1998587    .7273984
+------------------------------------------------------------------------------
+
+**marginsplot**
+
+![](zip_margins.png)
+
+</pre>
+</blockquote>
+
+<p>The expected number of fish caught goes down as the number of children goes up 
+for both people with and without campers.</p>
+
+<p>A number of model fit indicators are available using the <strong>fitstat</strong> command, which is
+part of the <strong>spostado</strong> utilities by J. Scott Long and Jeremy Freese (<strong>findit spostado</strong>).</p>
+
+<blockquote>
+<pre>**fitstat**
+
+Measures of Fit for zip of count
+
+Log-Lik Intercept Only:      -1127.023   Log-Lik Full Model:          -1031.608
+D(244):                       2063.217   LR(4):                         190.829
+                                         Prob > LR:                       0.000
+McFadden's R2:                   0.085   McFadden's Adj R2:               0.079
+ML (Cox-Snell) R2:               0.534   Cragg-Uhler(Nagelkerke) R2:      0.534
+AIC:                             8.301   AIC*n:                        2075.217
+BIC:                           715.980   BIC':                         -168.743
+BIC used by Stata:            2090.824   AIC used by Stata:            2073.217</pre>
+</blockquote>
+
+<h4 id="toc_7">Things to consider</h4>
+
+<ul>
+<li>  Since <strong>zip</strong> has both a count model and a logit
+    model, each of the two models should have good predictors.  The two models do not        necessarily need to use the same predictors.</li>
+<li>  Problems of perfect prediction, separation or partial separation can occur in the
+logistic part of the zero-inflated model.</li>
+<li>  Count data often use exposure variables to indicate the number of times the event   could have happened. You can incorporate exposure into your model by using  the <strong>exposure()</strong>  option.</li>
+<li>  It is not recommended that zero-inflated poisson models be applied to   small samples.  What constitutes a small sample does not seem to be clearly defined
+in the literature.</li>
+<li>  Pseudo-R-squared values differ from OLS R-squareds, please see  <a href="http://www.ats.ucla.edu/stat/mult_pkg/faq/general/Psuedo_RSquareds.htm">FAQ: What are  pseudo R-squareds?</a> for a discussion on this issue.</li>
+</ul>
+
+<h4 id="toc_8">See also</h4>
+
+<ul>
+<li><p>Stata Online Manual</p>
+
+<div><pre><code class="language-none">*   [zip](http://www.stata.com/help.cgi?zip)</code></pre></div></li>
+</ul>
+
+<h4 id="toc_9">References</h4>
+
+<ul>
+<li>  Cameron, A. Colin and Trivedi, P.K. (2009) Microeconometrics using stata. College Station, TX: StataPress.</li>
+<li>  Long, J. Scott, &amp; Freese, Jeremy (2006). Regression Models for Categorical Dependent VariablesUsing Stata (Second Edition). College Station, TX: Stata Press.</li>
+<li>  Long, J. Scott (1997). Regression Models for Categorical and Limited Dependent Variables.Thousand Oaks, CA: Sage Publications.</li>
+</ul>
+
+<h4 id="toc_10">translate from</h4>
+
+<p>Introduction to SAS.  UCLA: Statistical Consulting Group. 
+from http://www.ats.ucla.edu/stat/sas/notes2/ (accessed November 24, 2007).</p>
+
+
+
+
+</body>
+
+</html>
