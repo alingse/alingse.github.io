@@ -1,5 +1,8 @@
 # for _source html
 _source/*.html
+# for template markdown
+_template/*.md
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
