@@ -13,7 +13,9 @@ import os
 
 
 __path__source = '_source'
+__path__template = '_template'
 __path_article = 'article'
+
 
 
 def find_buildhome(cur_dir=None):
@@ -56,15 +58,19 @@ def load_yaml_meta(htmlpath):
 def load_source_metas(buildhome):
     source_path = os.path.join(buildhome,__path__source)
 
+    error_metas = []
     metas = []
     for fname in os.listdir(source_path):
         htmlpath = os.path.join(source_path,fname)
         if htmlpath.endswith('.html'):
             status,meta = load_yaml_meta(htmlpath)
             meta['htmlpath'] = htmlpath
-            metas.append((status,meta))
+            if status:
+                metas.append(meta)
+            else:
+                error_metas.append(meta)
 
-    return metas
+    return metas,error_metas
 
 
 def aggregate_metas(metas):
@@ -90,6 +96,16 @@ def aggregate_metas(metas):
 
         return bad_metas,metas
 
+    def cat_aggregate(metas):
+        cats = {}
+        for meta in metas:
+            _cat = meta['cat']
+            if _cat not in cats:
+                cats[_cat] = {'name':_cat,'metas':[]}
+            cats[_cat]['metas'].append(meta)
+
+        return cats
+
     def tag_aggregate(metas):
         tags = {}
         for meta in metas:
@@ -97,8 +113,7 @@ def aggregate_metas(metas):
             for tag in _tags:
                 tid,name = tag.split('|')
                 if tid not in tags:
-                    tags[tid] = {'name':set(),'metas':[]}
-                tags[tid]['name'].add(name)
+                    tags[tid] = {'name':name,'metas':[]}
                 tags[tid]['metas'].append(meta)
         return tags
 
@@ -106,21 +121,25 @@ def aggregate_metas(metas):
         dates = {}
         for meta in metas:
             cdate = meta['cdate']
+            #raw string
             year,month,day = cdate.split('.')
             if year not in dates:
-                dates[year] = {'list':[]}
+                dates[year] = {'info':{'name':year,'metas':[]}}
             if month not in dates[year]:
-                dates[year][month] = []
-            dates[year][month].append(meta)
-            dates[year]['list'].append(meta)
+                dates[year][month] = {'name':'.'.join([year,month]),'metas':[]}
+            dates[year][month]['metas'].append(meta)
+            dates[year]['info']['metas'].append(meta)
         return dates
 
 
     agg_info = {}
 
+    #check conflict
     bad_metas,metas = id_conflict(metas)
+
     agg_info['bad_metas'] = bad_metas
     agg_info['metas'] = metas
+    agg_info['catinfo'] = cat_aggregate(metas)
     agg_info['taginfo'] = tag_aggregate(metas)
     agg_info['dateinfo'] = date_aggregate(metas)
 
@@ -136,28 +155,64 @@ def mvto_article(metas,buildhome):
         shutil.copy(htmlpath,fpath)
 
 
+def load_listtemplate(buildhome):
+    tmpath = os.path.join(buildhome,__path__template)
+
+    templates = {}
+    for fname in os.listdir(tmpath):
+        name = fname.strip('.html')
+        value = os.path.join(tmpath,fname)
+        templates[name] = value
+
+    return templates
+
+
+def gen_listhtml(info,templatepath,outpath):
+
+    pass
+
+
+def dispatch_render(agg_info,templates,buildhome):
+    
+    #only for cat
+    cats = agg_info['catinfo']
+    for cat in cats:
+        info = cats[cat]
+        tmpath = templates.get('list.{}.html'.format(cat),'list.default.html')
+        outpath = os.path.join(buildhome,cat)
+        gen_listhtml(info,tmpath,outpath)
+
+
+
 def main(cur_dir=None):
 
     buildhome = find_buildhome(cur_dir=cur_dir)
-    res_list = load_source_metas(buildhome)
-    
-    metas = map(itemgetter(1),filter(itemgetter(0),res_list))
-    
-    #load error
-    error_metas = map(itemgetter(1),filter(lambda x: not itemgetter(0)(x),res_list))
+
+    metas,error_metas = load_source_metas(buildhome)
+
+    #error metas 
     for meta in error_metas:
         print('This file is load meta error: ',meta)
+
     #agg
     agg_info = aggregate_metas(metas)
-    #bad
+
+    #bad metas
     bad_metas = agg_info['bad_metas']
     for meta in bad_metas:
         print('This file conflict',meta['htmlpath'],meta['id'],meta['fid'])
-    #
-    metas = agg_info['metas']
 
+
+    metas = agg_info['metas']
     #just mv first
     mvto_article(metas,buildhome)
+
+    #render the agginfo
+    templates = load_listtemplate(buildhome)
+
+    dispatch_render(agg_info,templates,buildhome)
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
