@@ -314,11 +314,11 @@ sup {
 
 <h1 id="toc_0">这是{{ info.name }}列表页</h1>
 
-<p>以下是目前的文章,共有{% length(info.metas) %} </p>
+<p>以下是目前的文章,共有{{ info.metas|length }} </p>
 
 <ol>
-{% for meta in list.metas %}
-<li><a href="/{{doc.link}}">{{meta.title}}</a>创建于{{meta.date}}</li>
+{% for meta in info.metas %}
+<li><a href="/article/{{meta.fid}}.html">{{meta.title}}</a>创建于{{meta.date}}</li>
 {% endfor %}
 </ol>
 

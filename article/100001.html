@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="utf-8">
-<title>100001.Stata Data Analysis Examples.Zero-inflated Poisson Regression</title>
+<title>100001.Stata_Data_Analysis_Examples.Zero-inflated_Poisson_Regression</title>
 
 
 <style type="text/css">
@@ -321,9 +321,11 @@ tags:
   - translate|翻译
 cat: math
 cdate: "2016.07.30"
-mdate: "2016.07.30"
+mdate: "2016.08.10"
 title: "统计数据分析样例:零膨胀泊松回归"
 keyword: 
+    -  数据分析样例
+    -  零膨胀泊松回归
     - Zero-inflated Poisson
     - Regression
     - Stata Data Analysis
@@ -334,7 +336,7 @@ keyword:
 <hr>
 
 <p>类型:翻译
-翻译时间: 2016.07.30－
+翻译时间: 2016.07.30-2016.08.10
 译者:alingse</p>
 
 <hr>
@@ -497,31 +499,26 @@ who have received at least one citation are in the traffic court files.
        Total |        250      100.00
  </code></pre></div>
 
-<h4 id="toc_4">Analysis methods you might consider</h4>
+<h4 id="toc_4">你可能考虑的分析方法</h4>
 
-<p>Below is a list of some analysis methods you may have encountered.
-Some of the methods listed are quite reasonable while others have either fallen out of favor or 
-have limitations. </p>
+<p>下面是一些你可能已经碰到过的分析方法。
+其中一些方法相当合理，而另一些则已经不新鲜了或者有限制。</p>
 
 <ul>
-<li>  Zero-inflated Poisson Regression - The focus of this web page.</li>
-<li>  Zero-inflated Negative Binomial Regression - Negative binomial regression does better with
-over dispersed data, i.e. variance much larger than the mean.*   Ordinary Count Models - Poisson or negative binomial models might be more
-appropriate if there are no excess zeros.</li>
-<li>  OLS Regression - You could try to analyze these data using OLS regression. However, count
-data are highly non-normal and are not well estimated by OLS regression.</li>
+<li>  零膨胀泊松回归 - 就是本页的内容</li>
+<li>  零膨胀负二项回归 - 负二项回归在处理分散数据上表现比较好，比如：方差比平均值大得多
+的数据。</li>
+<li>  普通的计数模型 - 如果没有超量的零，回归模型或二项回归模型可能可能更合适。</li>
+<li>  普通最小二乘法（OLS）回归 - 你可能会试着用普通最小二乘法来分析这些数据。但是,计数数据是高度非正常的，而且用最小二乘法估计的并不好。</li>
 </ul>
 
-<h4 id="toc_5">Zero-inflated Poisson regression</h4>
+<h4 id="toc_5">零膨胀泊松回归</h4>
 
-<p>We will run the <strong>zip</strong> command with <strong>child</strong> and <strong>camper</strong> as predictors of the counts,
-<strong>persons</strong> as the predictor of the excess zeros.  We have included the <strong>vuong</strong> option
-which provides a test of the zero-inflated model versus the standard poisson model.</p>
+<p>本文会运行<strong>zip</strong>命令，并以<strong>child</strong>和<strong>camper</strong>作为捕鱼数量的预测因素，<strong>persons</strong> 作为过量零值的预测因素。也包含了<strong>vuong</strong>选项用来提供零膨胀模型与标准回归模型间的测量。</p>
 
 <p><strong>zip count child camper, inflate(persons) vuong</strong></p>
 
-<div><pre><code class="language-none">
-Fitting constant-only model:
+<div><pre><code class="language-none">Fitting constant-only model:
 
 Iteration 0:   log likelihood =  -1347.807  
 Iteration 1:   log likelihood = -1315.5343  
@@ -560,11 +557,11 @@ inflate      |
 ------------------------------------------------------------------------------
 Vuong test of zip vs. standard Poisson:            z =     3.57  Pr&gt;z = 0.0002</code></pre></div>
 
-<p>The output looks very much like the output from an OLS regression:  </p>
+<p>这个结果看起来非常像是一个最小二乘法回归得到的结果:</p>
 
 <ul>
-<li>  Begins with
-the iteration log giving the values of the log likelihoods starting
+<li>  Begins with the iteration log 
+giving the values of the log likelihoods starting
 with a model that has no predictors.  The last value in the log is the final value
 of the log likelihood for the full model and is repeated below.</li>
 <li>  Next comes the header information. On the right-hand side the number ofobservations used (250), number of nonzero observations (108) are given along with the likelihoodratio chi-squared.&nbsp;This compares the full model to a model without count predictors, giving adifference of two degrees of freedom.&nbsp; This is followed by the p-value forthe chi-square. The model, as a whole, is statistically significant.*   Below the header you will find the Poisson regression coefficients for each of thecount predicting variables
