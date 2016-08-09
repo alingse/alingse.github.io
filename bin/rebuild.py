@@ -6,6 +6,8 @@
 from __future__ import print_function
 from operator import itemgetter
 
+#from jinja2 import Template
+import jinja2
 import argparse
 import shutil
 import yaml
@@ -15,7 +17,6 @@ import os
 __path__source = '_source'
 __path__template = '_template'
 __path_article = 'article'
-
 
 
 def find_buildhome(cur_dir=None):
@@ -147,6 +148,11 @@ def aggregate_metas(metas):
 
 
 def mvto_article(metas,buildhome):
+    #title
+    #keyword SEO
+    def patch_meta():
+        pass
+
     article_path = os.path.join(buildhome,__path_article)
     for meta in metas:
         htmlpath = meta['htmlpath']
@@ -155,33 +161,32 @@ def mvto_article(metas,buildhome):
         shutil.copy(htmlpath,fpath)
 
 
-def load_listtemplate(buildhome):
-    tmpath = os.path.join(buildhome,__path__template)
+def load_template(buildhome):
+    template_path = os.path.join(buildhome,__path__template)
+    loader = jinja2.FileSystemLoader(template_path)
+    env = jinja2.Environment()
+    env.loader = loader
 
-    templates = {}
-    for fname in os.listdir(tmpath):
-        name = fname.strip('.html')
-        value = os.path.join(tmpath,fname)
-        templates[name] = value
-
-    return templates
+    return env
 
 
-def gen_listhtml(info,templatepath,outpath):
+def gen_listhtml(info,template,outpath):
+    fname = os.path.join(outpath,'index.html')
+    with open(fname,'w') as f:
+        out = template.render(info=info)
+        f.write(out.encode('utf-8'))
 
-    pass
 
-
-def dispatch_render(agg_info,templates,buildhome):
-    
-    #only for cat
+def dispatch_render(agg_info,env,buildhome):
+    default_html = 'list.default.html'
+    #only for cat --- now
     cats = agg_info['catinfo']
     for cat in cats:
         info = cats[cat]
-        tmpath = templates.get('list.{}.html'.format(cat),'list.default.html')
+        cat_html = 'list.{}.html'.format(cat)
         outpath = os.path.join(buildhome,cat)
-        gen_listhtml(info,tmpath,outpath)
-
+        template = env.select_template([cat_html,default_html])        
+        gen_listhtml(info,template,outpath)
 
 
 def main(cur_dir=None):
@@ -204,13 +209,14 @@ def main(cur_dir=None):
 
 
     metas = agg_info['metas']
-    #just mv first
+    #just mv first//or patch the meta
     mvto_article(metas,buildhome)
 
-    #render the agginfo
-    templates = load_listtemplate(buildhome)
+    #load template env
+    env = load_template(buildhome)
 
-    dispatch_render(agg_info,templates,buildhome)
+    #dispatch render the agginfo
+    dispatch_render(agg_info,env,buildhome)
 
 
 
