@@ -6,7 +6,6 @@
 from __future__ import print_function
 from operator import itemgetter
 
-#from jinja2 import Template
 import jinja2
 import argparse
 import shutil
@@ -77,9 +76,11 @@ def load_source_metas(buildhome):
 def aggregate_metas(metas):
     #if id is error
     def id_conflict(metas):
-        bad_ids = set()
+        bad_ids = set()        
         bad_metas = []
         exit = False
+
+        #check error
         while not exit:
             exit = True
             _metas = []
@@ -94,7 +95,20 @@ def aggregate_metas(metas):
                 else:
                     _metas.append(meta)
             metas = _metas
+        
+        #check uniq
+        idlist = map(itemgetter("id"),metas)
+        for id in set(idlist):
+            idlist.remove(id)
 
+        _metas = []
+        for meta in metas:
+            if meta['id'] in idlist:
+                bad_metas.append(meta)
+            else:
+                _metas.append(meta)
+
+        metas = _metas
         return bad_metas,metas
 
     def cat_aggregate(metas):
