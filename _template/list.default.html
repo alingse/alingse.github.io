@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="utf-8">
-<title>{title}</title>
+<title>alingse {{info.name}}列表页</title>
 
 
 <style type="text/css">
@@ -314,11 +314,11 @@ sup {
 
 <h1 id="toc_0">这是{{ info.name }}列表页</h1>
 
-<p>以下是目前的文章,共有{{ info.metas|length }} </p>
+<p>目前共有{{ info.metas|length }}篇文章</p>
 
 <ol>
 {% for meta in info.metas %}
-<li><a href="/article/{{meta.fid}}.html">{{meta.title}}</a>创建于{{meta.cdate}} 最后修改于{{meta.mdate}}</li>
+<li><a href="/article/{{meta.fid}}.html">{{meta.title}}</a>创建于{{meta.cdate}} 最后修改于:{{meta.mdate}}</li>
 {% endfor %}
 </ol>
 
