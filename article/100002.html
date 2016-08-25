@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<title>100002.openvpn-server-client</title>
+
+
+<style type="text/css">
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+
+</head>
+
+<body>
+
+<p><YAML-META-INFO-START/></p>
+
+<!--
+id: 100002
+tags:
+  - openvpn|openvpn
+  - devops|开发运维
+cat: code
+cdate: "2016.08.23"
+mdate: "2016.08.25"
+title: "openvpn server client 配置部署实践过程"
+keyword: 
+  -  openvpn
+  -  server
+  - 配置
+  - 部署
+  - 运维
+-->
+
+<p><YAML-META-INFO-END/></p>
+
+<h1 id="toc_0">openvpn server-client 实践过程</h1>
+
+<p>因为有两台机器，一台阿里云 ubuntu 一台 腾讯云 centos，而且都是低配版本。</p>
+
+<p>一些服务就分散配置在两台上，想通过vpn连接在一起，组成局域网，不把服务暴漏出去，</p>
+
+<p>同时本地的电脑也可以访问这些服务，方便开发调试。</p>
+
+<h2 id="toc_1">VPN 选择</h2>
+
+<p>一开始没有用VPN，是因为无论ubuntu还是centos 都没提供的简介的默认的server.conf 之类的，</p>
+
+<p><code>apt-get/yum install openvpn</code> 之后，只有一个孤零零的openvpn</p>
+
+<p>偷懒心起，就围观了一堆VPN server软件的测评。</p>
+
+<ul>
+<li>PPTP </li>
+<li>L2TP</li>
+<li>openvpn</li>
+<li>SoftEtherVPN</li>
+<li><p>....</p>
+
+<p>有的说这个不行，那个不稳定，就是要偏听偏信，最后筛掉剩，<code>SoftEtherVPN</code>，但是官网打不开，github文档也没有，看了一些文章也觉得操作太多，
+最后选定了<code>openvpn</code>(<a href="https://github.com/OpenVPN/openvpn">github</a>)</p></li>
+</ul>
+
+<h2 id="toc_2">安装</h2>
+
+<h3 id="toc_3">准备工作</h3>
+
+<p>在github 发现srever和cient用的同一个<code>openvpn</code>执行文件，就去release下载相关版本包，</p>
+
+<p>down下来是源码，autoreconf 有几个环境需要设置，果断放弃。</p>
+
+<p>找来找去，github的<a href="https://github.com/OpenVPN/openvpn">README</a>上链接到<a href="https://openvpn.net/index.php/download/community-downloads.html">download页面</a>，下载了<code>Source Tarball (gzip)</code>的<a href="https://swupdate.openvpn.org/community/releases/openvpn-2.3.12.tar.gz">openvpn-2.3.12.tar.gz</a>,在ubuntu 以及centos上就编译安装。</p>
+
+<p>简单的三步</p>
+
+<div><pre><code class="language-bash">./configure
+make
+make install</code></pre></div>
+
+<p>可能要安装 ssl,lzo,libpam等依赖</p>
+
+<p>可以通过像 <code>apt-cache/yum search ssl|grep dev|grep ssl</code> 这样，找到相应的包安装，</p>
+
+<p>即 <code>libssl-dev</code> 和<code>openssl-devel</code>，<code>liblzo2-dev</code>和<code>lzo-devel</code>，
+<code>libpam0g-dev</code> 和 <code>pam-devel</code>。</p>
+
+<p>搜索出来的要注意看后面的说明，这里要的基本都是dev，开发包之类的。</p>
+
+<h3 id="toc_4">部署流程</h3>
+
+<h4 id="toc_5">1. CA以及公私秘钥生成</h4>
+
+<div><pre><code class="language-none">内容基本上参考了这篇[月光博客／guest_server 投稿](http://www.williamlong.info/archives/3814.html) ，虽然许多命令以及一些东西变化了，但是基本流程一样。下面就按新的命令做一下。
+
+这基本是为服务端、客户端配证书和key，
+
+说一句， `easy-rsa` 感觉真的是**太好用了**，应该不仅限于openvpn这儿使用。
+
+软件包是在[github](https://github.com/OpenVPN/easy-rsa)上下的[release](https://github.com/OpenVPN/easy-rsa/releases) 3.0.1</code></pre></div>
+
+<p>先测试<code>./easyrsa</code></p>
+
+<div><pre><code class="language-bash"> bash$./easy-rsa
+......
+  init-pki
+  build-ca [ cmd-opts ]
+  gen-dh
+  gen-req &lt;filename_base&gt; [ cmd-opts ]
+  sign-req &lt;type&gt; &lt;filename_base&gt;
+  build-client-full &lt;filename_base&gt; [ cmd-opts ]
+  build-server-full &lt;filename_base&gt; [ cmd-opts ]
+  revoke &lt;filename_base&gt;
+  gen-crl
+  update-db
+  show-req &lt;filename_base&gt; [ cmd-opts ]
+  show-cert &lt;filename_base&gt; [ cmd-opts ]
+  import-req &lt;request_file_path&gt; &lt;short_basename&gt;
+  export-p7 &lt;filename_base&gt; [ cmd-opts ]
+  export-p12 &lt;filename_base&gt; [ cmd-opts ]
+  set-rsa-pass &lt;filename_base&gt; [ cmd-opts ]
+  set-ec-pass &lt;filename_base&gt; [ cmd-opts ]
+......</code></pre></div>
+
+<p>这一列都是action命令。</p>
+
+<p>按照月光博客的步骤来制作证书，命令按照最新的来的</p>
+
+<p>不说证书、签名、RSA、公私钥这些了，自己去学，</p>
+
+<ol>
+<li><code>./easyrsa init-pki</code> 生成环境</li>
+<li><code>./easyrsa build-ca</code> 制作CA，这里需要设CA的密码</li>
+<li><code>./easyrsa build-server-full xxx</code> 生成server xxx 公私钥，要设置一个密码，同时要用到上面那个密码</li>
+<li><code>./easyrsa build-client-full clientxxx</code>生成客户端 clientxxx 公私钥，和上面差不多。</li>
+<li><p><code>./easyrsa gen-dh</code> 生成 dh.pem 是一个2048位左右的素数，</p>
+
+<p>最后各个文件的用处见于下表</p>
+
+<!--
+| 文件名 | 需要者 Needed By | 说明Purpose | 秘密 Secret |
+| ca.crt | 服务端和所有客户端 server + all clients | 根证书 Root CA certificate | 否 NO |
+| ca.key | 签发私钥的机器 key signing machine only | 根私钥  Root CA key | 是 YES |
+| dh{n}.pem | 服务器 server only | Diffie Hellman parameters | 否 NO |
+| server.crt | 服务器 server only | 服务器证书 Server Certificate | 否 NO |
+| server.key | 服务器 server only | 服务器私钥 Server Key | 是 YES |
+| client1.crt | client1 only | Clinet1的证书 Client1 Certificate | 否 NO |
+| client1.key | client1 only | Clinet1的私钥 Client1 Key | 是 YES |
+| client2.crt | client2 only | Client2的证书 Client2 Certificate | 否 NO |
+| client2.key | client2 only | Client2的私钥 Client2 Key | 是 YES |
+| client3.crt | client3 only | Client3的证书 Client3 Certificate | 否 NO |
+| client3.key | client3 only | Client3的私钥 Client3 Key | 是 YES |
+-->
+
+<p>这里拷贝的原网页，就没有编辑成md表格</p>
+
+<table cellspacing="0" cellpadding="8" border="1"> <tbody> <tr> <td>文件名</td> <td>需要者<br> Needed By</td> <td>说明<br> Purpose</td> <td>秘密<br> Secret</td> </tr> <tr> <td>ca.crt</td> <td>服务端和所有客户端<br> server + all clients</td> <td>根证书<br> Root CA certificate</td> <td>否<br> NO</td> </tr> <tr> <td>ca.key</td> <td>签发私钥的机器<br> key signing machine only</td> <td>根私钥<br> Root CA key</td> <td>是<br> YES</td> </tr> <tr> <td>dh{n}.pem</td> <td>服务器<br> server only</td> <td>Diffie Hellman parameters</td> <td>否<br> NO</td> </tr> <tr> <td>server.crt</td> <td>服务器<br> server only</td> <td>服务器证书<br> Server Certificate</td> <td>否<br> NO</td> </tr> <tr> <td>server.key</td> <td>服务器<br> server only</td> <td>服务器私钥<br> Server Key</td> <td>是<br> YES</td> </tr> <tr> <td>client1.crt</td> <td>client1 only</td> <td>Clinet1的证书<br> Client1 Certificate</td> <td>否<br> NO</td> </tr> <tr> <td>client1.key</td> <td>client1 only</td> <td>Clinet1的私钥<br> Client1 Key</td> <td>是<br> YES</td> </tr> <tr> <td>client2.crt</td> <td>client2 only</td> <td>Client2的证书<br> Client2 Certificate</td> <td>否<br> NO</td> </tr> <tr> <td>client2.key</td> <td>client2 only</td> <td>Client2的私钥<br> Client2 Key</td> <td>是<br> YES</td> </tr> <tr> <td>client3.crt</td> <td>client3 only</td> <td>Client3的证书<br> Client3 Certificate</td> <td>否<br> NO</td> </tr> <tr> <td>client3.key</td> <td>client3 only</td> <td>Client3的私钥<br> Client3 Key</td> <td>是<br> YES</td> </tr> </tbody></table>
+
+<p>说一句，这个制作在哪儿制作都可以，最好在常用电脑上，注意保护好CA私钥就是了  </p>
+
+<p>此外根据下面2的配置，使用<code>openvpn --genkey --secret ta.key</code>生成了一份<code>ta.key</code><br>
+用于 tls 好像 </p></li>
+</ol>
+
+<h4 id="toc_6">2. server.conf 配置</h4>
+
+<p>从<code>openvpn-2.3.12/sample/sample-config-files</code>处拷出一份 server.conf，</p>
+
+<p>server.conf 的配置说明见于<a href="http://www.woyaohuijia.cn/show/121.html">这篇</a></p>
+
+<p>就不说了，说下我的对原文件的改动的部分。</p>
+
+<div><pre><code class="language-conf">  local 我的机器的公网
+  ca ca.crt 上一个生成的CA公钥，
+  cert server.crt 上面生产的server公钥
+  key server.key  # This file should be kept secret，
+  dh dh.pem 上面生成的素数文件
+  server 修改了这里，选了一个小一点不常见的范围，
+  client-to-client 开启了这个，测试一下
+  tls-auth ta.key 0 # This file is secret,上面生成的
+  max-clients 3  设了少一点
+  user nobody  运行用户
+  group nogroup 运行组
+  status openvpn-status.log
+  log         openvpn.log
+  log-append  openvpn.log</code></pre></div>
+
+<p>启动 <code>openvpn --config server.conf</code>
+  需要密码，是server秘钥的密码，输入就是了，这是在另一个窗口开始 ifconfig 即可看到生成的网络端口</p>
+
+<h4 id="toc_7">3. server 运行</h4>
+
+<p>因为要输入server 的密码，同时也需要后台运行
+  查看  <code>openvpn --help</code> ,看有哪些选项，</p>
+
+<p>最好找到了 <code>--askpass [file]</code> ，就把密码存入文件，然后加上这个选项成功了</p>
+
+<p>编辑server.conf 试试能不能配置 <code>askpass xxx.txt</code>，也ok，</p>
+
+<p><code>--cd dir</code> 运行时移到某个目录，当然是配置的目录</p>
+
+<p><code>--cd /usr/local/openvpn</code> 感觉需要先cd 才能找到server.conf 所以没有写</p>
+
+<p><code>--writepid file</code> pid file，把<code>writepid /run/openvpn.pid</code>写入server.conf</p>
+
+<p><code>--daemon</code> ，把<code>daemon</code> 写入server.conf</p>
+
+<p>运行之后，可以，就还想写一个<a href="https://github.com/alingse/sundry/tree/master/openvpn/init.d">sundry/openvpn/init.d</a>的管理工具</p>
+
+<p>贴一部分代码<a href="https://github.com/alingse/sundry/tree/master/openvpn/init.d/openvpn.server">sundry/openvpn/init.d/openvpn</a></p>
+
+<div><pre><code class="language-bash">  #!/bin/sh
+
+  PIDFILE=/run/openvpn.pid
+
+ start_server () {
+    if [ -f $PIDFILE ]
+    then
+        echo &#39;already started&#39;
+        exit 3 
+    else
+        echo &#39;starting&#39;
+        openvpn --cd /usr/local/openvpn/ --config server.conf;
+        echo &#39;sucess&#39;
+    fi
+}
+
+ stop_server () {
+    if [ -f $PIDFILE ]
+    then
+        echo &#39;kill process &#39;`cat $PIDFILE`
+        kill `cat $PIDFILE`
+        rm $PIDFILE
+    else
+        echo &#39;pid file not exists&#39;
+        exit 2
+    fi
+}
+
+ restart_server() {
+    stop_server
+    start_server
+}</code></pre></div>
+
+<p>大致这个样子</p>
+
+<p><code>/etc/init.openvpn start|stop|restart</code></p>
+
+<h4 id="toc_8">4. client 配置／连接</h4>
+
+<p>同样从<code>openvpn-2.3.12/sample/sample-config-files</code>处拷出一份 client.conf，</p>
+
+<p>然后编辑，基本改动比较少，有些选项照抄server 即可</p>
+
+<p>如下是改动的部分</p>
+
+<div><pre><code class="language-conf">  remote xx.xx.xx.xx 1194
+  user nobody
+  group nobody
+  ca ca.crt  你的CA公钥
+  cert clientxx.crt 的公钥
+  key clientxx.key 的私钥 
+  tls-auth ta.key 1 切记这个ta.key 是在server上生成的，不要漏掉
+  #额外添加的log
+  log openvpn.log
+  log-append  openvpn.log
+  status openvpn-status.log
+  #运行的
+  writepid /run/openvpn.pid
+  daemon
+  # 在 easyrsa 那一步输入的密码，
+  askpass pass.client.txt </code></pre></div>
+
+<p>openvpn --config client.conf 即可</p>
+
+<p>同时照例可以编写出<a href="https://github.com/alingse/sundry/tree/master/openvpn/init.d/openvpn.client">init.d/openvpn</a></p>
+
+<p><code>/etc/init.d/openvpn start|stop|restart</code></p>
+
+<p>运行后即可看到连接的IP，</p>
+
+<h3 id="toc_9">使用</h3>
+
+<h4 id="toc_10">1. 固定IP设置</h4>
+
+<p>因为是两台主机，要交互，所以要给client机器配上固定的IP，
+   看了下 要编辑 ipp.txt</p>
+
+<p>同时在server.conf 取消相关注释，得到
+   <code>ifconfig-pool-persist ipp.txt</code></p>
+
+<p>ipp.txt 内容是一行行的name,IP，比如这里就是
+   <code>client0,xx.xx.xx.xx</code></p>
+
+<p>因为<code>client0</code> 是<code>easyrsa</code>制作客户端秘钥对时用的名字，</p>
+
+<p>好像是因为<code>easyrsa</code>机智的把name和common name 合并成简单的一个。</p>
+
+<p>来回调试时，发现好像IP只能间隔大于4个，，比如</p>
+
+<div><pre><code class="language-txt">   client0,xx.xx.xx.4 
+   client1,xx.xx.xx.8</code></pre></div>
+
+<p>这样子的。。。可能是新的要求吧，以后再看官方文档研究了</p>
+
+<h4 id="toc_11">2. 其他</h4>
+
+<p>可以把相关<code>/etc/init.d/openvpn</code> 加入到 启动项，或者是调整参数，retry之类的，</p>
+
+<p>以后再弄。</p>
+
+<h2 id="toc_12">结论</h2>
+
+<ol>
+<li>新版本就是好，比以前简单优雅</li>
+<li>多看 --help </li>
+<li>了解原理还是比较快的 </li>
+</ol>
+
+<p><code>easyrsa</code> 真是简直不要太简洁方便的了，</p>
+
+
+
+
+</body>
+
+</html>
