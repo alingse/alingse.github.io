@@ -495,17 +495,26 @@ make install</code></pre></div>
 
 <p>编辑server.conf 试试能不能配置 <code>askpass xxx.txt</code>，也ok，</p>
 
+<p>其他的一些命令</p>
+
 <p><code>--cd dir</code> 运行时移到某个目录，当然是配置的目录</p>
 
 <p><code>--cd /usr/local/openvpn</code> 感觉需要先cd 才能找到server.conf 所以没有写</p>
 
 <p><code>--writepid file</code> pid file，把<code>writepid /run/openvpn.pid</code>写入server.conf</p>
 
-<p><code>--daemon</code> ，把<code>daemon</code> 写入server.conf</p>
+<p><code>--daemon</code> ，把<code>daemon</code> 也写入server.conf</p>
 
-<p>运行之后，可以，就还想写一个<a href="https://github.com/alingse/sundry/tree/master/openvpn/init.d">sundry/openvpn/init.d</a>的管理工具</p>
+<p>最后把这些写入<code>server.conf</code>:</p>
 
-<p>贴一部分代码<a href="https://github.com/alingse/sundry/tree/master/openvpn/init.d/openvpn.server">sundry/openvpn/init.d/openvpn</a></p>
+<div><pre><code class="language-conf">  ......
+  writepid /run/openvpn.pid
+  daemon
+  askpass pass.server.txt</code></pre></div>
+
+<p>运行之后，可以，就还想写一个<code>/etc/init.d</code>的管理工具</p>
+
+<p>贴一部分代码<a href="https://github.com/alingse/sundry/tree/master/openvpn/init.d/openvpn.server">alingse:sundry/openvpn/init.d/openvpn</a></p>
 
 <div><pre><code class="language-bash">  #!/bin/sh
 
@@ -566,12 +575,12 @@ make install</code></pre></div>
   #运行的
   writepid /run/openvpn.pid
   daemon
-  # 在 easyrsa 那一步输入的密码，
+  # 在 easyrsa 之前easyrsa 生成clietn.crt时输入的密码，
   askpass pass.client.txt </code></pre></div>
 
 <p>openvpn --config client.conf 即可</p>
 
-<p>同时照例可以编写出<a href="https://github.com/alingse/sundry/tree/master/openvpn/init.d/openvpn.client">init.d/openvpn</a></p>
+<p>同时照例可以编写出<a href="https://github.com/alingse/sundry/tree/master/openvpn/init.d/openvpn.client">/etc/init.d/openvpn</a></p>
 
 <p><code>/etc/init.d/openvpn start|stop|restart</code></p>
 
@@ -594,7 +603,7 @@ make install</code></pre></div>
 
 <p>好像是因为<code>easyrsa</code>机智的把name和common name 合并成简单的一个。</p>
 
-<p>来回调试时，发现好像IP只能间隔大于4个，，比如</p>
+<p>来回调试时，发现好像IP只能间隔大于4个,而且最后的IP也不是这里配的IP(但是相对固定的)，，比如</p>
 
 <div><pre><code class="language-txt">   client0,xx.xx.xx.4 
    client1,xx.xx.xx.8</code></pre></div>

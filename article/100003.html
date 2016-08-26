@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="utf-8">
-<title>alingse code列表页</title>
+<title>100003.rebuild介绍</title>
 
 
 <style type="text/css">
@@ -312,17 +312,79 @@ sup {
 
 <body>
 
-<h1 id="toc_0">这是code列表页</h1>
+<p><YAML-META-INFO-START/></p>
 
-<p>目前共有2篇文章</p>
+<!--
+id: 100003
+tags:
+  - python|python
+  - markdown|markdown
+cat: code
+cdate: "2016.07.15"
+mdate: "2016.08.25"
+title: "本项目 rebuild 页面目录结构"
+keyword: 
+  - markdown
+  - 渲染
+  - python
+  - build
+-->
+
+<p><YAML-META-INFO-END/></p>
+
+<h1 id="toc_0">快写下来！</h1>
+
+<p>这是<a href="https://github.com/alingse"><code>alingse</code></a>写的github page用来写一些东西</p>
+
+<p>很想说：快写下来！</p>
+
+<h2 id="toc_1">页面目录结构</h2>
+
+<h3 id="toc_2">存储</h3>
+
+<p>原始markdwon文章统一存储在repo 下<code>_source</code>文件夹下，同一文章有md和html(由md文件导出)两种格式的文件</p>
+
+<p>发布文章存放在<code>article</code>目录下，文章从<a href="/article/100000.html"><code>100000.html</code></a>开始编号</p>
+
+<p>列表页的模版存储在<code>_template</code>下面</p>
+
+<h3 id="toc_3">主分类</h3>
+
+<p>大分类上大致目前先开这四大类。</p>
 
 <ol>
-
-<li><a href="/article/100002.html">openvpn server client 配置部署实践过程</a>创建于2016.08.23 最后修改于:2016.08.25</li>
-
-<li><a href="/article/100003.html">本项目 rebuild 页面目录结构</a>创建于2016.07.15 最后修改于:2016.08.25</li>
-
+<li><code>/learn</code> <a href="/learn">学习</a></li>
+<li><code>/code</code><a href="/code">编码</a></li>
+<li><code>/math</code><a href="/math">数学</a></li>
+<li><code>/fun</code><a href="/fun">段子</a></li>
 </ol>
+
+<p>每个分类下是一个列表页<code>index.html</code>，给出文章的列表页(使用 构建工具构建)</p>
+
+<h3 id="toc_4">tag</h3>
+
+<p>计划每篇文章内加 tag，通过构建，给出tag的列表页</p>
+
+<p>以及相关tag的列表页<code>index.html</code>，比如：</p>
+
+<p><a href="/tag"><code>/tag</code></a></p>
+
+<p><code>/tag/java</code> <a href="">java</a></p>
+
+<p><code>/tag/concurrency</code> <a href="">并发</a></p>
+
+<p><code>/tag/chengdu</code> <a href="">成都</a></p>
+
+<h3 id="toc_5">date</h3>
+
+<p>也使用构建工具，按照日期页构建出 每年、每月各个级别的列表页</p>
+
+<p><code>/date/2016/07</code> </p>
+
+<p>诸如此类</p>
+
+
+
 
 </body>
 
