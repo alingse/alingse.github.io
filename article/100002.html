@@ -389,13 +389,13 @@ make install</code></pre></div>
 
 <h4 id="toc_5">1. CA以及公私秘钥生成</h4>
 
-<div><pre><code class="language-none">内容基本上参考了这篇[月光博客／guest_server 投稿](http://www.williamlong.info/archives/3814.html) ，虽然许多命令以及一些东西变化了，但是基本流程一样。下面就按新的命令做一下。
+<p>内容基本上参考了这篇<a href="http://www.williamlong.info/archives/3814.html">月光博客／guest_server 投稿</a> ，虽然许多命令以及一些东西变化了，但是基本流程一样。下面就按新的命令做一下。</p>
 
-这基本是为服务端、客户端配证书和key，
+<p>这基本是为服务端、客户端配证书和key，</p>
 
-说一句， `easy-rsa` 感觉真的是**太好用了**，应该不仅限于openvpn这儿使用。
+<p>说一句， <code>easy-rsa</code> 感觉真的是<strong>太好用了!</strong>，应该不仅限于openvpn这儿使用。</p>
 
-软件包是在[github](https://github.com/OpenVPN/easy-rsa)上下的[release](https://github.com/OpenVPN/easy-rsa/releases) 3.0.1</code></pre></div>
+<p>easy-rsa 的 软件包是在<a href="https://github.com/OpenVPN/easy-rsa">github</a>上下的 <a href="https://github.com/OpenVPN/easy-rsa/releases">release</a> 3.0.1</p>
 
 <p>先测试<code>./easyrsa</code></p>
 
@@ -422,15 +422,15 @@ make install</code></pre></div>
 
 <p>这一列都是action命令。</p>
 
-<p>按照月光博客的步骤来制作证书，命令按照最新的来的</p>
+<p>按照月光博客的步骤来制作证书(命令已经变化了)，按照最新的命令来的，基本都简单易懂，一望而知。</p>
 
-<p>不说证书、签名、RSA、公私钥这些了，自己去学，</p>
+<p>不说证书、签名、RSA、公私钥这些了，自己去学，下面也有一个表。</p>
 
 <ol>
 <li><code>./easyrsa init-pki</code> 生成环境</li>
 <li><code>./easyrsa build-ca</code> 制作CA，这里需要设CA的密码</li>
-<li><code>./easyrsa build-server-full xxx</code> 生成server xxx 公私钥，要设置一个密码，同时要用到上面那个密码</li>
-<li><code>./easyrsa build-client-full clientxxx</code>生成客户端 clientxxx 公私钥，和上面差不多。</li>
+<li><code>./easyrsa build-server-full xxx</code> 生成server xxx 公私钥，要设置一个密码，同时要用到上面那个密码。（多说一句，这里的xxx 就是证书的common Name）</li>
+<li><code>./easyrsa build-client-full yyy</code>生成客户端 yyy 公私钥，和上面差不多。</li>
 <li><p><code>./easyrsa gen-dh</code> 生成 dh.pem 是一个2048位左右的素数，</p>
 
 <p>最后各个文件的用处见于下表</p>
