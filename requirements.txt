@@ -1,3 +1,0 @@
-hypermark
-jinja2
-pyyaml
