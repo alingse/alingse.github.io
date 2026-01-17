@@ -90,8 +90,8 @@ body {
 }
 
 .post-preview-thumbnail {
-  width: 120px;
-  height: 160px;
+  width: 200px;
+  height: 112px;
   object-fit: cover;
   border-radius: 6px;
   flex-shrink: 0;
