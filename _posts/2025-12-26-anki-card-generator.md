@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Anki 卡片 AI 生成器——我的 Claude Agent SDK 实践
-og_image: /posts/anki-card-gen-agent.png
+og_image: /images/anki-card-gen-agent.png
 date: 2025-12-26 16:21:00 +0800
 categories: AI开发
 tags:

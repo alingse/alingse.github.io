@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 2024 工作之外的一些代码
-og_image: /posts/2024-code-github.png
+og_image: /images/2024-code-github.png
 date: 2024-12-31 00:04:24 +0800
 categories: 编程
 tags:
