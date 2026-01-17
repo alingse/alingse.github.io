@@ -66,32 +66,36 @@ body {
   margin-bottom: 20px;
   padding-bottom: 15px;
   border-bottom: 1px solid #eaecef;
-  display: flex;
-  gap: 15px;
 }
 
 .post-preview:last-child {
   border-bottom: none;
 }
 
+.post-title {
+  margin: 0 0 8px 0;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.post-preview-body {
+  display: flex;
+  gap: 15px;
+  margin-top: 8px;
+}
+
 .post-preview-thumbnail {
   width: 120px;
-  height: 80px;
+  height: 160px;
   object-fit: cover;
   border-radius: 6px;
   flex-shrink: 0;
   background-color: #f6f8fa;
 }
 
-.post-preview-content {
+.post-preview-excerpt {
   flex: 1;
   min-width: 0;
-}
-
-.post-title {
-  margin: 0 0 8px 0;
-  font-size: 17px;
-  font-weight: 500;
 }
 
 .post-title a {
@@ -187,7 +191,7 @@ body {
 .post-content h6 {
   margin-top: 25px;
   margin-bottom: 12px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.4;
 }
 
@@ -356,5 +360,14 @@ body {
 
   .post-content h2 {
     font-size: 17px;
+  }
+
+  /* 移动端隐藏缩略图，摘要占满宽度 */
+  .post-preview-thumbnail {
+    display: none;
+  }
+
+  .post-preview-body {
+    display: block;
   }
 }

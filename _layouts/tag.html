@@ -10,29 +10,29 @@ layout: default
   <div class="posts-list">
     {% for post in tag_posts %}
       <article class="post-preview">
-        {% if post.og_image %}
-        <div class="post-preview-thumbnail-wrapper">
+        <h3 class="post-title">
+          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        </h3>
+        <div class="post-meta">
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+          {% if post.categories %}
+          <span class="post-categories">
+            {% for category in post.categories %}
+              <a href="{{ '/category/' | append: category | relative_url }}">{{ category }}</a>{% if forloop.last == false %}, {% endif %}
+            {% endfor %}
+          </span>
+          {% endif %}
+        </div>
+        <div class="post-preview-body">
+          {% if post.og_image %}
           <a href="{{ post.url | relative_url }}">
             <img src="{{ post.og_image | relative_url }}" alt="{{ post.title }}" class="post-preview-thumbnail">
           </a>
-        </div>
-        {% endif %}
-        <div class="post-preview-content">
-          <h3 class="post-title">
-            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-          </h3>
-          <div class="post-meta">
-            <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
-            {% if post.categories %}
-            <span class="post-categories">
-              {% for category in post.categories %}
-                <a href="{{ '/category/' | append: category | relative_url }}">{{ category }}</a>{% if forloop.last == false %}, {% endif %}
-              {% endfor %}
-            </span>
-            {% endif %}
-          </div>
-          <div class="post-excerpt">
-            {{ post.content | strip_html | truncatewords: 80 }}
+          {% endif %}
+          <div class="post-preview-excerpt">
+            <div class="post-excerpt">
+              {{ post.content | strip_html | truncatewords: 80 }}
+            </div>
           </div>
         </div>
       </article>
