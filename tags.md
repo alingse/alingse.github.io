@@ -6,11 +6,11 @@ title: 标签
 <div class="tags-page">
   <h2>文章标签</h2>
 
-  {% assign tag_names = site.tags | map: 'first' | sort %}
-  {% if tag_names.size > 0 %}
+  {% if site.tags.size > 0 %}
     <div class="tags-cloud">
-      {% for tag_name in tag_names %}
-        {% assign posts = site.tags[tag_name] %}
+      {% for tag in site.tags %}
+        {% assign tag_name = tag[0] %}
+        {% assign posts = tag[1] %}
         <a href="{{ '/tag/' | append: tag_name | relative_url }}" class="tag-item">
           #{{ tag_name }}
           <span class="tag-count">{{ posts.size }}</span>
@@ -19,8 +19,9 @@ title: 标签
     </div>
 
     <div class="tags-list">
-      {% for tag_name in tag_names %}
-        {% assign posts = site.tags[tag_name] %}
+      {% for tag in site.tags %}
+        {% assign tag_name = tag[0] %}
+        {% assign posts = tag[1] %}
         <div class="tag-item-detail">
           <h3 class="tag-name">
             <a href="{{ '/tag/' | append: tag_name | relative_url }}">#{{ tag_name }}</a>

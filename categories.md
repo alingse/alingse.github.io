@@ -6,11 +6,11 @@ title: 分类
 <div class="categories-page">
   <h2>文章分类</h2>
 
-  {% assign category_names = site.categories | map: 'first' | sort %}
-  {% if category_names.size > 0 %}
+  {% if site.categories.size > 0 %}
     <div class="categories-list">
-      {% for category_name in category_names %}
-        {% assign posts = site.categories[category_name] %}
+      {% for category in site.categories %}
+        {% assign category_name = category[0] %}
+        {% assign posts = category[1] %}
         <div class="category-item">
           <h3 class="category-name">
             <a href="{{ '/category/' | append: category_name | relative_url }}">{{ category_name }}</a>
