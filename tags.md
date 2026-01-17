@@ -6,26 +6,28 @@ title: 标签
 <div class="tags-page">
   <h2>文章标签</h2>
 
-  {% assign tags = site.tags | sort %}
-  {% if tags.size > 0 %}
+  {% assign tag_names = site.tags | map: 'first' | sort %}
+  {% if tag_names.size > 0 %}
     <div class="tags-cloud">
-      {% for tag in tags %}
-        <a href="{{ '/tag/' | append: tag[0] | relative_url }}" class="tag-item">
-          #{{ tag[0] }}
-          <span class="tag-count">{{ tag[1].size }}</span>
+      {% for tag_name in tag_names %}
+        {% assign posts = site.tags[tag_name] %}
+        <a href="{{ '/tag/' | append: tag_name | relative_url }}" class="tag-item">
+          #{{ tag_name }}
+          <span class="tag-count">{{ posts.size }}</span>
         </a>
       {% endfor %}
     </div>
 
     <div class="tags-list">
-      {% for tag in tags %}
+      {% for tag_name in tag_names %}
+        {% assign posts = site.tags[tag_name] %}
         <div class="tag-item-detail">
           <h3 class="tag-name">
-            <a href="{{ '/tag/' | append: tag[0] | relative_url }}">#{{ tag[0] }}</a>
-            <span class="tag-count">{{ tag[1].size }} 篇</span>
+            <a href="{{ '/tag/' | append: tag_name | relative_url }}">#{{ tag_name }}</a>
+            <span class="tag-count">{{ posts.size }} 篇</span>
           </h3>
           <ul class="tag-posts">
-            {% for post in tag[1] %}
+            {% for post in posts %}
               <li>
                 <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
                 <a href="{{ post.url | relative_url }}">{{ post.title }}</a>

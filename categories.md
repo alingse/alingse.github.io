@@ -6,17 +6,18 @@ title: 分类
 <div class="categories-page">
   <h2>文章分类</h2>
 
-  {% assign categories = site.categories | sort %}
-  {% if categories.size > 0 %}
+  {% assign category_names = site.categories | map: 'first' | sort %}
+  {% if category_names.size > 0 %}
     <div class="categories-list">
-      {% for category in categories %}
+      {% for category_name in category_names %}
+        {% assign posts = site.categories[category_name] %}
         <div class="category-item">
           <h3 class="category-name">
-            <a href="{{ '/category/' | append: category[0] | relative_url }}">{{ category[0] }}</a>
-            <span class="category-count">{{ category[1].size }} 篇</span>
+            <a href="{{ '/category/' | append: category_name | relative_url }}">{{ category_name }}</a>
+            <span class="category-count">{{ posts.size }} 篇</span>
           </h3>
           <ul class="category-posts">
-            {% for post in category[1] %}
+            {% for post in posts %}
               <li>
                 <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
                 <a href="{{ post.url | relative_url }}">{{ post.title }}</a>

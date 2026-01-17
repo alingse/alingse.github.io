@@ -22,11 +22,9 @@ title: 首页
           </span>
           {% endif %}
         </div>
-        {% if post.excerpt %}
         <div class="post-excerpt">
-          {{ post.excerpt }}
+          {{ post.content | strip_html | truncatewords: 150 }}
         </div>
-        {% endif %}
       </article>
     {% endfor %}
 
