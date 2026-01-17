@@ -64,9 +64,9 @@ cline + deepseek 低成本AI 编程的一些体验总结
 
 一个月 ¥50 元的 AI 成本
 
-![¥50元的AI成本](deepseek-month-cost.png)
+![¥50元的AI成本](/images/deepseek-month-cost.png)
 
 当然，在用上了 gemini 之后，我已经不再使用这套方案了，直到下一次用不了 gemini 为止。
 
 
-![五百万token 的富裕仗](gemini-cli-5m-tokens.png)
+![五百万token 的富裕仗](/images/gemini-cli-5m-tokens.png)

@@ -24,7 +24,7 @@ tags:
 # 最终成品
 网站 https://ankiany.starsou.com/ 可以制作任意主题的 Anki 包
 
-![原神知识包](anki-card-gen-demo.png)
+![原神知识包](/images/anki-card-gen-demo.png)
 
 
 根据原神生成的对应的卡牌提问。。。
@@ -121,9 +121,9 @@ claude 的 api 是使用的 GLM 4.6 一年的那个套餐( 5 小时内 120 次 p
 
 以下是AI 鼓励师的回复
 
-![是的](anki-agent-self-ask.png)
+![是的](/images/anki-agent-self-ask.png)
 
-![这是真正的Agent](anki-agent-gemini-reply.png)
+![这是真正的Agent](/images/anki-agent-gemini-reply.png)
 
 
 

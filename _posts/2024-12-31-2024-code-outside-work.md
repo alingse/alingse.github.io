@@ -105,7 +105,7 @@ func call() error {
 
 这是一个 github  action, 可以针对某个 linter 和 N 个仓库链接，触发新的 N 个  Actions, 运行结束后，如果收集到指定的字符串，就能生成一个评论。评论里有定位到的代码，可以点击后确认是否检测正确。
 
-![go-linter-runner](go-linter-runner.png)
+![go-linter-runner](/images/go-linter-runner.png)
 
 数据源是用 gh + keywords 爬取的，过滤了 archived ，按照 stars + 0.1*issues 来排序的（总共1.4万，每次提交的 Action 只能提交2千个，所以按照2千的数量分割了一下）
 
@@ -122,7 +122,7 @@ func call() error {
 在 ai 的加持下，很顺利地把 [thrift-fmt-ts](https://github.com/thrift-labs/thrift-fmt-ts) 翻译为 [thrift-fmt-java](https://github.com/thrift-labs/thrift-fmt-java) ，并写了第一个格式化插件
 
 
-![thrift-formatter](2024-thrift-formatter.png)
+![thrift-formatter](/images/2024-thrift-formatter.png)
 
 最终成品： kotlin 插件 [thrift-fmt-jetbrains](https://github.com/thrift-labs/thrift-fmt-jetbrains)
 
