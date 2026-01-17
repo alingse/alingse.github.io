@@ -1,0 +1,88 @@
+---
+layout: default
+title: 标签
+---
+<div class="tag-single" id="tag-page">
+  <noscript>
+    <div class="no-js-message">
+      <p>请启用 JavaScript 查看标签页面，或访问 <a href="/tags/">标签列表</a>。</p>
+    </div>
+  </noscript>
+</div>
+
+<script>
+(function() {
+  // Get tag name from URL path (e.g., /tag/golang -> golang)
+  const pathParts = window.location.pathname.split('/').filter(Boolean);
+  const tagName = pathParts[pathParts.length - 1];
+
+  // Tag data from all posts
+  const tagData = {
+    {% for tag in site.tags %}
+    "{{ tag[0] }}": [
+      {% for post in tag[1] %}
+      {
+        title: "{{ post.title | escape }}",
+        url: "{{ post.url | relative_url }}",
+        date: "{{ post.date | date: "%Y-%m-%d" }}",
+        categories: [{% for category in post.categories %}"{{ category }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
+        excerpt: {{ post.content | strip_html | truncatewords: 80 | strip_newlines | jsonify }},
+        og_image: {% if post.og_image %}"{{ post.og_image | relative_url }}"{% else %}null{% endif %}
+      }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  };
+
+  const posts = tagData[tagName] || [];
+
+  const container = document.getElementById('tag-page');
+
+  if (posts.length === 0) {
+    container.innerHTML = `
+      <h2>标签: #${decodeURIComponent(tagName)}</h2>
+      <p class="tag-info">该标签下还没有文章。</p>
+      <p class="back-link"><a href="/tags/">&larr; 返回标签列表</a></p>
+    `;
+  } else {
+    let postsHtml = `
+      <h2>标签: #${decodeURIComponent(tagName)}</h2>
+      <p class="tag-info">共 ${posts.length} 篇文章</p>
+      <div class="posts-list">
+    `;
+
+    posts.forEach(post => {
+      const categoriesHtml = post.categories.length > 0
+        ? `<span class="post-categories">${post.categories.map(c => `<a href="/category/${encodeURIComponent(c)}">${c}</a>`).join(', ')}</span>`
+        : '';
+
+      const imageHtml = post.og_image
+        ? `<a href="${post.url}"><img src="${post.og_image}" alt="${post.title}" class="post-preview-thumbnail"></a>`
+        : '';
+
+      postsHtml += `
+        <article class="post-preview">
+          <h3 class="post-title"><a href="${post.url}">${post.title}</a></h3>
+          <div class="post-meta">
+            <time datetime="${post.date}">${post.date}</time>
+            ${categoriesHtml}
+          </div>
+          <div class="post-preview-body">
+            ${imageHtml}
+            <div class="post-preview-excerpt">
+              <div class="post-excerpt">${post.excerpt}</div>
+            </div>
+          </div>
+        </article>
+      `;
+    });
+
+    postsHtml += `
+      </div>
+      <p class="back-link"><a href="/tags/">&larr; 返回标签列表</a></p>
+    `;
+
+    container.innerHTML = postsHtml;
+  }
+})();
+</script>
