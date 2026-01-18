@@ -11,9 +11,9 @@ title: 分类
       {% for category in site.categories %}
         {% assign category_name = category[0] %}
         {% assign posts = category[1] %}
-        <div class="category-item">
+        <div class="category-item" id="{{ category_name }}">
           <h3 class="category-name">
-            <a href="{{ '/category/' | append: category_name | relative_url }}">{{ category_name }}</a>
+            <a href="{{ '/categories/#' | append: category_name | relative_url }}">{{ category_name }}</a>
             <span class="category-count">{{ posts.size }} 篇</span>
           </h3>
           <ul class="category-posts">

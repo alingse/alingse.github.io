@@ -11,7 +11,7 @@ title: 标签
       {% for tag in site.tags %}
         {% assign tag_name = tag[0] %}
         {% assign posts = tag[1] %}
-        <a href="{{ '/tag/' | append: tag_name | relative_url }}" class="tag-item">
+        <a href="{{ '/tags/#' | append: tag_name | relative_url }}" class="tag-item">
           #{{ tag_name }}
           <span class="tag-count">{{ posts.size }}</span>
         </a>
@@ -22,9 +22,9 @@ title: 标签
       {% for tag in site.tags %}
         {% assign tag_name = tag[0] %}
         {% assign posts = tag[1] %}
-        <div class="tag-item-detail">
+        <div class="tag-item-detail" id="{{ tag_name }}">
           <h3 class="tag-name">
-            <a href="{{ '/tag/' | append: tag_name | relative_url }}">#{{ tag_name }}</a>
+            <a href="{{ '/tags/#' | append: tag_name | relative_url }}">#{{ tag_name }}</a>
             <span class="tag-count">{{ posts.size }} 篇</span>
           </h3>
           <ul class="tag-posts">
