@@ -23,7 +23,7 @@ title: 归档
                 {% if post.categories %}
                 <span class="archive-categories">
                   {% for category in post.categories %}
-                    <span class="category-tag">{{ category }}</span>
+                    <a href="{{ '/categories/#' | append: category | relative_url }}" class="category-tag">{{ category }}</a>
                   {% endfor %}
                 </span>
                 {% endif %}
@@ -109,5 +109,10 @@ title: 归档
   border-radius: 12px;
   font-size: 12px;
   margin-left: 5px;
+  text-decoration: none;
+}
+
+.category-tag:hover {
+  background-color: #e1e4e8;
 }
 </style>
